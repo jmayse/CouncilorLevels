@@ -1,10 +1,9 @@
 /CouncilorLevels/bin
 /CouncilorLevels/obj
 /CouncilorLevels/Properties
-mod
+/.vs
 /Properties
+mod
+
 *.csproj
-
-
-/.vs/CouncilorLevels/v16
-.gitattributes
+*.gitattributes
