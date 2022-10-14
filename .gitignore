@@ -4,3 +4,6 @@
 mod
 /Properties
 *.csproj
+
+.vs
+.gitattributes
