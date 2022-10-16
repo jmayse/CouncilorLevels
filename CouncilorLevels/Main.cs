@@ -44,13 +44,10 @@ namespace CouncilorLevels
         {
             if (Main.enabled)
             {
-                Log.Info("InitWithTemplatePatch 1");
                 TICouncilorTemplate ticouncilortemplate = template as TICouncilorTemplate;
-                Log.Info("InitWithTemplatePatch 2");
                 bool flag = ticouncilortemplate == null;
                 if (!flag)
                 {
-                    Log.Info("InitWithTemplatePatch 3");
                     CouncilorLevelManagerExternalMethods.AddCouncilorLevel(__instance);
                 }
                 

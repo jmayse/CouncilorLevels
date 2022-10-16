@@ -25,7 +25,6 @@ namespace CouncilorLevels
         /// <param name="councilor">The TICouncilorState instance</param>
         public static void RemoveCouncilorLevel(TICouncilorState councilor)
         {
- 
             Manager.DeRegisterList(councilor);
         }
 
@@ -33,9 +32,9 @@ namespace CouncilorLevels
         /// Increments or adds a councilor to the register
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void AddCouncilorLevel(TICouncilorState councilor)
+        public static void AddCouncilorLevel(TICouncilorState councilor, TICouncilorLevelState councilorLevel=null)
         {
-            Manager.RegisterList(councilor);
+            Manager.RegisterList(councilor, councilorLevel);
         }
 
         /// <summary>

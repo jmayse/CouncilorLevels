@@ -4,43 +4,6 @@ using UnityEngine;
 
 namespace CouncilorLevels
 {
-    public class TICouncilorLevelState : TICouncilorState
-    {
-        [SerializeField]
-        public int Level { get; set; } = 0;
-
-        // new public TICouncilorState ref_councilor;
-
-        public void increment()
-        {
-            Level += 1;
-        }
-
-        public void decrement()
-        {
-            Level -= 1;
-        }
-
-        public TICouncilorLevelState ref_councilorLevelState
-        {
-            get
-            {
-                return this;
-            }
-        }
-
-        public void InitWithCouncilorState(TICouncilorState councilor)
-        {
-            bool flag = councilor.template == null;
-            if (!flag)
-            {
-                this.templateName = councilor.template.dataName;
-                this.Level = Level;               
-            }
-        }
-
-    }
-
     public class CouncilorLevelManager
     {
         /// <summary>
@@ -74,18 +37,21 @@ namespace CouncilorLevels
         /// Registers a new member in the CouncilorIDCouncilorLevelList keyed by their ID with default level 1
         /// </summary>
         /// <param name="councilor">The instance to register</param>
-        public void RegisterList(TICouncilorState councilor)
+        public void RegisterList(TICouncilorState councilor, TICouncilorLevelState councilorLevel=null)
         {
-            Log.Info("RegisterList 1");
             if (!CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
-                Log.Info("RegisterList 2"); // Game crashes after logging this line
-                TICouncilorLevelState tiCouncilorLevelState = GameStateManager.CreateNewGameState<TICouncilorLevelState>();
-                Log.Info("RegisterList 3"); // This line is never logged
-                tiCouncilorLevelState.InitWithCouncilorState(councilor);
-                Log.Info("RegisterList 4");
-                CouncilorIDCouncilorLevelList.Add(councilor.ID, tiCouncilorLevelState);
-                Log.Info("RegisterList 5");
+                bool flag = (councilorLevel == null);
+                if (!flag)
+                {
+                    CouncilorIDCouncilorLevelList.Add(councilor.ID, councilorLevel);
+                }
+                else
+                {
+                    TICouncilorLevelState tiCouncilorLevelState = GameStateManager.CreateNewGameState<TICouncilorLevelState>();
+                    tiCouncilorLevelState.InitWithCouncilorState(councilor);
+                    CouncilorIDCouncilorLevelList.Add(councilor.ID, tiCouncilorLevelState);
+                }
             }
 
         }
@@ -96,7 +62,6 @@ namespace CouncilorLevels
         /// <param name="councilor">The instance to deregister</param>
         public void DeRegisterList(TICouncilorState councilor)
         {
-            
             if (!CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
                 TICouncilorLevelState councilorLevel = this[councilor];
