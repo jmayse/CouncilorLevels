@@ -1,32 +1,59 @@
 ﻿using System.Collections.Generic;
 using PavonisInteractive.TerraInvicta;
+using UnityEngine;
 
 namespace CouncilorLevels
 {
+    public class TICouncilorLevelState : TICouncilorState
+    {
+        [SerializeField]
+        public int Level { get; set; } = 0;
+
+        // new public TICouncilorState ref_councilor;
+
+        public void increment()
+        {
+            Level += 1;
+        }
+
+        public void decrement()
+        {
+            Level -= 1;
+        }
+
+        public TICouncilorLevelState ref_councilorLevelState
+        {
+            get
+            {
+                return this;
+            }
+        }
+
+        public void InitWithCouncilorState(TICouncilorState councilor)
+        {
+            bool flag = councilor.template == null;
+            if (!flag)
+            {
+                this.templateName = councilor.template.dataName;
+                this.Level = Level;               
+            }
+        }
+
+    }
+
     public class CouncilorLevelManager
     {
         /// <summary>
         /// A Dictionary containing all levels keyed to TICouncilorState
         /// </summary>
-        private Dictionary<GameStateID, int> CouncilorIDCouncilorLevelList = new Dictionary<GameStateID, int>();
-
-        /// <summary>
-        /// Registers a new member in the CouncilorIDCouncilorLevelList keyed by their ID with default level 1 or else increments existing councilor
-        /// </summary>
-        /// <param name="councilor">The instance to register</param>
-        public void RegisterList(TICouncilorState councilor)
-        {
-            // Default for TryGetValue is 0 so if the councilor isn't in the Dictionary it's added with level 1, otherwise it's incremented
-            CouncilorIDCouncilorLevelList.TryGetValue(councilor.ID, out var currentLevel);
-            CouncilorIDCouncilorLevelList[councilor.ID] = currentLevel + 1;
-        }
+        public Dictionary<GameStateID, TICouncilorLevelState> CouncilorIDCouncilorLevelList = new Dictionary<GameStateID, TICouncilorLevelState>();
 
         /// <summary>
         /// Returns the int level associated with the TICouncilorState. Will add the key if it is missing w/ default level.
         /// </summary>
         /// <param name="councilor">The councilor to lookup</param>
         /// <returns></returns>
-        public int? this[TICouncilorState councilor]
+        public TICouncilorLevelState this[TICouncilorState councilor]
         {
             get
             {
@@ -44,13 +71,36 @@ namespace CouncilorLevels
         }
 
         /// <summary>
+        /// Registers a new member in the CouncilorIDCouncilorLevelList keyed by their ID with default level 1
+        /// </summary>
+        /// <param name="councilor">The instance to register</param>
+        public void RegisterList(TICouncilorState councilor)
+        {
+            Log.Info("RegisterList 1");
+            if (!CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
+            {
+                Log.Info("RegisterList 2"); // Game crashes after logging this line
+                TICouncilorLevelState tiCouncilorLevelState = GameStateManager.CreateNewGameState<TICouncilorLevelState>();
+                Log.Info("RegisterList 3"); // This line is never logged
+                tiCouncilorLevelState.InitWithCouncilorState(councilor);
+                Log.Info("RegisterList 4");
+                CouncilorIDCouncilorLevelList.Add(councilor.ID, tiCouncilorLevelState);
+                Log.Info("RegisterList 5");
+            }
+
+        }
+
+        /// <summary>
         /// Deregisters an existing member from the CouncilorIDCouncilorLevelList
         /// </summary>
         /// <param name="councilor">The instance to deregister</param>
         public void DeRegisterList(TICouncilorState councilor)
         {
-            if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
+            
+            if (!CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
+                TICouncilorLevelState councilorLevel = this[councilor];
+                bool result = GameStateManager.RemoveGameState<TICouncilorLevelState>(councilorLevel.ID, false);
                 CouncilorIDCouncilorLevelList.Remove(councilor.ID);
             }
         }
@@ -64,7 +114,7 @@ namespace CouncilorLevels
         {
             if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
-                CouncilorIDCouncilorLevelList[councilor.ID] = value;
+                this[councilor].Level = value;
             }
         }
 
@@ -76,5 +126,28 @@ namespace CouncilorLevels
             CouncilorIDCouncilorLevelList.Clear();
         }
 
+        /// <summary>
+        /// Increment a councilor's level
+        /// </summary>
+        /// <param name="councilor"></param>
+        public void IncrementCouncilorLevel(TICouncilorState councilor)
+        {
+            if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
+            {
+                this[councilor].increment();
+            }
+        }
+
+        /// <summary>
+        /// Decrement a councilor's level
+        /// </summary>
+        /// <param name="councilor"></param>
+        public void DecrementCouncilorLevel(TICouncilorState councilor)
+        {
+            if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
+            {
+                this[councilor].decrement();
+            }
+        }
     }
 }

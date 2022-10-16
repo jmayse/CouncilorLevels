@@ -32,7 +32,7 @@ namespace CouncilorLevels
 
         static void Postfix(TICouncilorState __instance)
         {
-            CouncilorLevelManagerExternalMethods.AddOrIncrementCouncilorLevel(__instance);
+            CouncilorLevelManagerExternalMethods.IncrementCouncilorLevel(__instance);
         }
     }
 
@@ -40,19 +40,20 @@ namespace CouncilorLevels
     static class InitWithTemplatePatch
     {
 
-        static void Postfix(TIDataTemplate template, ref bool ___gameStateSubjectCreated, TICouncilorState __instance)
+        static void Postfix(TIDataTemplate template, TICouncilorState __instance)
         {
             if (Main.enabled)
             {
-                if (!___gameStateSubjectCreated)
+                Log.Info("InitWithTemplatePatch 1");
+                TICouncilorTemplate ticouncilortemplate = template as TICouncilorTemplate;
+                Log.Info("InitWithTemplatePatch 2");
+                bool flag = ticouncilortemplate == null;
+                if (!flag)
                 {
-                    TICouncilorTemplate ticouncilortemplate = template as TICouncilorTemplate;
-                    bool flag = ticouncilortemplate == null;
-                    if (!flag)
-                    {
-                        CouncilorLevelManagerExternalMethods.AddOrIncrementCouncilorLevel(__instance);
-                    }
+                    Log.Info("InitWithTemplatePatch 3");
+                    CouncilorLevelManagerExternalMethods.AddCouncilorLevel(__instance);
                 }
+                
             }
         }
     }

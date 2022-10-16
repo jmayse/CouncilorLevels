@@ -14,16 +14,16 @@ namespace CouncilorLevels
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
         /// <returns></returns>
-        public static int? GetCouncilorLevel(this TICouncilorState councilor)
+        public static int? GetCouncilorLevel(TICouncilorState councilor)
         {
-            return Manager[councilor];
+            return Manager[councilor].Level;
         }
 
         /// <summary>
         /// Removes a councilor from the register
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void RemoveCouncilorLevel(this TICouncilorState councilor)
+        public static void RemoveCouncilorLevel(TICouncilorState councilor)
         {
  
             Manager.DeRegisterList(councilor);
@@ -33,22 +33,27 @@ namespace CouncilorLevels
         /// Increments or adds a councilor to the register
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void AddOrIncrementCouncilorLevel(this TICouncilorState councilor)
+        public static void AddCouncilorLevel(TICouncilorState councilor)
         {
             Manager.RegisterList(councilor);
+        }
+
+        /// <summary>
+        /// Increments the councilor level
+        /// </summary>
+        /// <param name="councilor">The TICouncilorState instance</param>
+        public static void IncrementCouncilorLevel(TICouncilorState councilor)
+        {
+            Manager.IncrementCouncilorLevel(councilor);
         }
 
         /// <summary>
         /// Decrements the councilor level
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void DecrementCouncilorLevel(this TICouncilorState councilor)
+        public static void DecrementCouncilorLevel(TICouncilorState councilor)
         {
-            int? currentLevel = Manager[councilor];
-            if (currentLevel != null)
-            {
-                Manager.UpdateRegisterList(councilor, (int)currentLevel-1);
-            }
+            Manager.DecrementCouncilorLevel(councilor);
         }
     }
 }
