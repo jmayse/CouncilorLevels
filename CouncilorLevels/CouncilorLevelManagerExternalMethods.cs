@@ -41,18 +41,24 @@ namespace CouncilorLevels
         /// Increments the councilor level
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void IncrementCouncilorLevel(TICouncilorState councilor)
+        public static void IncrementCouncilorLevel(TICouncilorState councilor, int levelCost)
         {
-            Manager.IncrementCouncilorLevel(councilor);
+            Log.Info("Adding to Councilor level with XP " + levelCost.ToString());
+            Manager.IncrementCouncilorLevel(councilor, levelCost);
         }
 
         /// <summary>
         /// Decrements the councilor level
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void DecrementCouncilorLevel(TICouncilorState councilor)
+        public static void DecrementCouncilorLevel(TICouncilorState councilor, int levelCost)
         {
-            Manager.DecrementCouncilorLevel(councilor);
+            Manager.DecrementCouncilorLevel(councilor, levelCost);
+        }
+
+        public static void Respec(TICouncilorState councilor)
+        {
+            Manager.Respec(councilor);
         }
     }
 }

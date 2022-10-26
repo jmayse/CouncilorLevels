@@ -95,11 +95,12 @@ namespace CouncilorLevels
         /// Increment a councilor's level
         /// </summary>
         /// <param name="councilor"></param>
-        public void IncrementCouncilorLevel(TICouncilorState councilor)
+        public void IncrementCouncilorLevel(TICouncilorState councilor, int levelCost)
         {
             if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
-                this[councilor].increment();
+                Log.Info("Adding " + levelCost.ToString() + " to total xp");
+                this[councilor].increment(levelCost);
             }
         }
 
@@ -107,12 +108,20 @@ namespace CouncilorLevels
         /// Decrement a councilor's level
         /// </summary>
         /// <param name="councilor"></param>
-        public void DecrementCouncilorLevel(TICouncilorState councilor)
+        public void DecrementCouncilorLevel(TICouncilorState councilor, int levelCost)
         {
             if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
-                this[councilor].decrement();
+                this[councilor].decrement(levelCost);
             }
         }
-    }
+
+        public void Respec(TICouncilorState councilor)
+        {
+            if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
+            {
+                this[councilor].Respec();
+            }
+        }
+}
 }
