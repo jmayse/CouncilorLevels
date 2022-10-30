@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using PavonisInteractive.TerraInvicta;
-using UnityEngine;
+﻿using PavonisInteractive.TerraInvicta;
+using System.Collections.Generic;
 
 namespace CouncilorLevels
 {
@@ -37,7 +36,7 @@ namespace CouncilorLevels
         /// Registers a new member in the CouncilorIDCouncilorLevelList keyed by their ID with default level 1
         /// </summary>
         /// <param name="councilor">The instance to register</param>
-        public void RegisterList(TICouncilorState councilor, TICouncilorLevelState councilorLevel=null)
+        public void RegisterList(TICouncilorState councilor, TICouncilorLevelState councilorLevel = null)
         {
             if (!CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
@@ -95,12 +94,12 @@ namespace CouncilorLevels
         /// Increment a councilor's level
         /// </summary>
         /// <param name="councilor"></param>
-        public void IncrementCouncilorLevel(TICouncilorState councilor, int levelCost)
+        public void IncrementCouncilorLevel(TICouncilorState councilor)
         {
             if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
-                Log.Info("Adding " + levelCost.ToString() + " to total xp");
-                this[councilor].increment(levelCost);
+                // Log.Info("Adding " + levelCost.ToString() + " to total xp");
+                this[councilor].increment();
             }
         }
 
@@ -108,11 +107,11 @@ namespace CouncilorLevels
         /// Decrement a councilor's level
         /// </summary>
         /// <param name="councilor"></param>
-        public void DecrementCouncilorLevel(TICouncilorState councilor, int levelCost)
+        public void DecrementCouncilorLevel(TICouncilorState councilor)
         {
             if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
-                this[councilor].decrement(levelCost);
+                this[councilor].decrement();
             }
         }
 
@@ -123,5 +122,5 @@ namespace CouncilorLevels
                 this[councilor].Respec();
             }
         }
-}
+    }
 }

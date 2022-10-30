@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using PavonisInteractive.TerraInvicta;
+﻿using PavonisInteractive.TerraInvicta;
 using PavonisInteractive.TerraInvicta.Actions;
 using PavonisInteractive.TerraInvicta.Entities;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CouncilorLevels
@@ -30,24 +30,23 @@ namespace CouncilorLevels
 
         public List<string> traitTemplateNames { get; set; }
 
-        public void increment(int levelCost)
+        public void increment()
         {
             if (Level == CurrentLevel)
             {
                 CurrentLevel += 1;
             }
             Level += 1;
-            TotalXP += levelCost;
-            Log.Info("Total XP is now " + TotalXP.ToString());
+            // TotalXP += levelCost;
+            // Log.Info("Total XP is now " + TotalXP.ToString());
             return;
         }
 
-        public void decrement(int levelCost)
+        public void decrement()
         {
             if (CurrentLevel > 0)
             {
                 CurrentLevel -= 1;
-                TotalXP -= levelCost;
             }
         }
 
@@ -61,7 +60,7 @@ namespace CouncilorLevels
 
         private void AssignAttributes(KeyValuePair<CouncilorAttribute, int> attribute)
         {
-            Log.Info("AssignAttrs");
+            // Log.Info("AssignAttrs");
             switch (attribute.Key)
             {
                 case CouncilorAttribute.Persuasion:
@@ -88,7 +87,7 @@ namespace CouncilorLevels
                 default:
                     break;
             }
-            
+
         }
 
         public void InitWithCouncilorState(TICouncilorState councilor)
@@ -117,43 +116,44 @@ namespace CouncilorLevels
         {
             try
             {
-                Log.Info("Init here");
-                Log.Info(this.ref_councilor.ID.ToString());
+                // Log.Info("Init here");
+                // Log.Info(this.ref_councilor.ID.ToString());
                 if (!this.AlreadyInit)
                 {
                     // Set default values from councilor at init
-                    Log.Info("Init here - inside bool check");
+                    // Log.Info("Init here - inside bool check");
                     if (this.ref_councilor != null)
                     {
                         if (this.ref_councilor.attributes != null)
                         {
                             foreach (KeyValuePair<CouncilorAttribute, int> attribute in this.ref_councilor.attributes)
-                            {        
-                                Log.Info("Inside foreach");
-                                this.AssignAttributes(attribute);   
+                            {
+                                // Log.Info("Inside foreach");
+                                this.AssignAttributes(attribute);
                             }
-                            Log.Info("Done with foreach");
+                            // Log.Info("Done with foreach");
                             this.traitTemplateNames = new List<string>(this.ref_councilor.traitTemplateNames);
 
                             // Flag that this step has been done once & does not need to be repeated
                             this.AlreadyInit = true;
                         }
-                        else { Log.Info("Attributes are null!"); }
-                        
+                        else { // Log.Info("Attributes are null!");
+                             }
+
                     }
                 }
 
-                Log.Info("Outside bool check");
+                // Log.Info("Outside bool check");
                 CouncilorLevelManagerExternalMethods.AddCouncilorLevel(this.ref_councilor, this);
             }
             catch (System.Exception e)
             {
-                Log.Info(e.Message);
+                // Log.Info(e.Message);
                 throw;
             }
-            
+
         }
-          
+
         private int AdjustAttribute(int? input, CouncilorAttribute attribute)
         {
             return input - this.ref_councilor.attributes[attribute] ?? 0;
@@ -161,20 +161,20 @@ namespace CouncilorLevels
 
         private void RemoveTraits()
         {
-            Log.Info("Remove Traits Here");
+            // Log.Info("Remove Traits Here");
             for (int i = this.ref_councilor.traits.Count - 1; i >= 0; i--)
             {
                 TITraitTemplate traitTemplate = this.ref_councilor.traits[i];
-                Log.Info("Removing trait " + traitTemplate.displayName);
+                // Log.Info("Removing trait " + traitTemplate.displayName);
                 this.ref_councilor.RemoveTrait(traitTemplate);
-                Log.Info("Removed trait " + traitTemplate.displayName);
+                // Log.Info("Removed trait " + traitTemplate.displayName);
             }
-            Log.Info("Remove Traits Done");
+            // Log.Info("Remove Traits Done");
         }
 
         private void RemoveOrgs()
         {
-            Log.Info("Remove orgs");
+            // Log.Info("Remove orgs");
             TIFactionState faction = this.ref_councilor.faction;
             Player playerControl = faction.playerControl;
             List<TransferOrgToFactionPoolAction> list = new List<TransferOrgToFactionPoolAction>();
@@ -186,13 +186,16 @@ namespace CouncilorLevels
             {
                 playerControl.StartAction(transferOrgToFactionPoolAction);
             }
-            Log.Info("Remove Orgs done");
+            // Log.Info("Remove Orgs done");
         }
 
         private void ResetXP()
         {
+            int total_xp = this.TotalXP;
+            Log.Info("1 TotalXP is " + this.TotalXP.ToString() + "TotalXPCopy is " + total_xp);
             this.ref_councilor.ChangeXP(this.TotalXP);
-            this.TotalXP = 0;
+            this.TotalXP = total_xp;
+            Log.Info("2 TotalXP is " + this.TotalXP.ToString() + "TotalXPCopy is " + total_xp);
             this.CurrentLevel = 1;
         }
 
@@ -201,14 +204,14 @@ namespace CouncilorLevels
         /// </summary>
         private void SetTraits()
         {
-            Log.Info("Add traits here");
+            // Log.Info("Add traits here");
             foreach (string traitName in this.traitTemplateNames)
             {
-                Log.Info("Adding trait " + traitName);
+                // Log.Info("Adding trait " + traitName);
                 this.ref_councilor.AddTrait(traitName);
-                Log.Info("Added trait " + traitName);
+                // Log.Info("Added trait " + traitName);
             }
-            Log.Info("Add traits done");
+            // Log.Info("Add traits done");
         }
 
         /// <summary>
@@ -216,7 +219,7 @@ namespace CouncilorLevels
         /// </summary>
         private void AssignStatsFromTemplate()
         {
-            Log.Info("Setting stats");
+            // Log.Info("Setting stats");
             this.ref_councilor.ModifyAttribute(CouncilorAttribute.Persuasion, this.AdjustAttribute(this.Persuasion, CouncilorAttribute.Persuasion));
             this.ref_councilor.ModifyAttribute(CouncilorAttribute.Espionage, this.AdjustAttribute(this.Espionage, CouncilorAttribute.Espionage));
             this.ref_councilor.ModifyAttribute(CouncilorAttribute.Command, this.AdjustAttribute(this.Command, CouncilorAttribute.Command));
@@ -224,27 +227,27 @@ namespace CouncilorLevels
             this.ref_councilor.ModifyAttribute(CouncilorAttribute.Science, this.AdjustAttribute(this.Science, CouncilorAttribute.Science));
             this.ref_councilor.ModifyAttribute(CouncilorAttribute.Administration, this.AdjustAttribute(this.Administration, CouncilorAttribute.Administration));
             this.ref_councilor.ModifyAttribute(CouncilorAttribute.Security, this.AdjustAttribute(this.Security, CouncilorAttribute.Security));
-            Log.Info("Done setting stats");
+            // Log.Info("Done setting stats");
         }
 
         public void Respec()
         {
-            Log.Info("Remove all orgs");
+            // Log.Info("Remove all orgs");
             this.RemoveOrgs();
 
-            Log.Info("Remove all attrs & add all attrs from template");
+            // Log.Info("Remove all attrs & add all attrs from template");
             this.AssignStatsFromTemplate();
 
-            Log.Info("Remove all traits");
+            // Log.Info("Remove all traits");
             this.RemoveTraits();
 
-            Log.Info("Set all traits to default");
+            // Log.Info("Set all traits to default");
             this.SetTraits();
 
-            Log.Info("Change XP");
+            // Log.Info("Change XP");
             this.ResetXP();
 
-            Log.Info("Done");
+            // Log.Info("Done");
         }
     }
 }

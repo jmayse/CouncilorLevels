@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrgCapFromCouncilorLevel.cs" />
     <Compile Include="TIMissionEffect_RespecCouncilor.cs" />
     <Compile Include="TICouncilorLevelState.cs" />
     <Compile Include="Main.cs" />

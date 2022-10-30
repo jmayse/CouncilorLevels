@@ -6,9 +6,9 @@ namespace CouncilorLevels
     {
         public override string ApplyEffect(TIMissionState mission, TIGameState target, TIMissionOutcome outcome = TIMissionOutcome.Success)
         {
-            Log.Info("ApplyEffect 1");
+            // Log.Info("ApplyEffect 1");
             CouncilorLevelManagerExternalMethods.Respec(mission.councilor);
-            Log.Info("ApplyEffect 2");
+            // Log.Info("ApplyEffect 2");
             return string.Empty;
         }
     }

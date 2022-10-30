@@ -1,4 +1,5 @@
-﻿using PavonisInteractive.TerraInvicta;
+﻿using UnityEngine;
+using PavonisInteractive.TerraInvicta;
 
 namespace CouncilorLevels
 {
@@ -19,6 +20,17 @@ namespace CouncilorLevels
             return Manager[councilor].Level;
         }
 
+        public static int? GetCouncilorTotalXP(TICouncilorState councilor)
+        {
+            return Manager[councilor].TotalXP;
+        }
+
+        public static void AddXPToCouncilorTotalXP(TICouncilorState councilor, int value)
+        {
+            // Manager[councilor].TotalXP = Mathf.Max(Manager[councilor].TotalXP, councilor.XP);
+            Manager[councilor].TotalXP += value;
+        }
+
         /// <summary>
         /// Removes a councilor from the register
         /// </summary>
@@ -32,7 +44,7 @@ namespace CouncilorLevels
         /// Increments or adds a councilor to the register
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void AddCouncilorLevel(TICouncilorState councilor, TICouncilorLevelState councilorLevel=null)
+        public static void AddCouncilorLevel(TICouncilorState councilor, TICouncilorLevelState councilorLevel = null)
         {
             Manager.RegisterList(councilor, councilorLevel);
         }
@@ -41,19 +53,19 @@ namespace CouncilorLevels
         /// Increments the councilor level
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void IncrementCouncilorLevel(TICouncilorState councilor, int levelCost)
+        public static void IncrementCouncilorLevel(TICouncilorState councilor)
         {
-            Log.Info("Adding to Councilor level with XP " + levelCost.ToString());
-            Manager.IncrementCouncilorLevel(councilor, levelCost);
+            // Log.Info("Adding to Councilor level with XP " + levelCost.ToString());
+            Manager.IncrementCouncilorLevel(councilor);
         }
 
         /// <summary>
         /// Decrements the councilor level
         /// </summary>
         /// <param name="councilor">The TICouncilorState instance</param>
-        public static void DecrementCouncilorLevel(TICouncilorState councilor, int levelCost)
+        public static void DecrementCouncilorLevel(TICouncilorState councilor)
         {
-            Manager.DecrementCouncilorLevel(councilor, levelCost);
+            Manager.DecrementCouncilorLevel(councilor);
         }
 
         public static void Respec(TICouncilorState councilor)
