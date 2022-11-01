@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using PavonisInteractive.TerraInvicta;
-using UnityEngine;
+﻿using PavonisInteractive.TerraInvicta;
+using System.Collections.Generic;
 
 namespace CouncilorLevels
 {
@@ -37,7 +36,7 @@ namespace CouncilorLevels
         /// Registers a new member in the CouncilorIDCouncilorLevelList keyed by their ID with default level 1
         /// </summary>
         /// <param name="councilor">The instance to register</param>
-        public void RegisterList(TICouncilorState councilor, TICouncilorLevelState councilorLevel=null)
+        public void RegisterList(TICouncilorState councilor, TICouncilorLevelState councilorLevel = null)
         {
             if (!CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
@@ -99,6 +98,7 @@ namespace CouncilorLevels
         {
             if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
+                // Log.Info("Adding " + levelCost.ToString() + " to total xp");
                 this[councilor].increment();
             }
         }
@@ -112,6 +112,14 @@ namespace CouncilorLevels
             if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
             {
                 this[councilor].decrement();
+            }
+        }
+
+        public void Respec(TICouncilorState councilor)
+        {
+            if (CouncilorIDCouncilorLevelList.ContainsKey(councilor.ID))
+            {
+                this[councilor].Respec();
             }
         }
     }

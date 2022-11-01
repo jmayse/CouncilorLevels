@@ -1,0 +1,3 @@
+﻿TIMissionTemplate.displayName.RespecCouncilor=Respect Councilor
+TIMissionTemplate.description.RespecCouncilor=Reset all of a councilor's augmentations to their starting value, including attributes and traits. Also unassigns all orgs to your faction pool.
+TIMissionTemplate.Success.RespecCouncilor=I'm ready to start over.

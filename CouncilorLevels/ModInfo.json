@@ -1,0 +1,13 @@
+{
+	"Id": "CouncilorLevels",
+	"DisplayName": "CouncilorLevels",
+	"title": "CouncilorLevels",
+	"author": "Zoloft Enthusiast",
+	"description": "Hidden councilor level that increments with apply augmentation",
+	"Version": "0.2.0",
+	"Requirements": [],
+	"ManagerVersion": "0.25.0",
+	"AssemblyName": "CouncilorLevels.dll",
+	"EntryMethod": "CouncilorLevels.Main.Load",
+	"mod url": "https://steampowered.com/workshop/modurl"
+}
