@@ -32,11 +32,11 @@ namespace CouncilorLevels
 
         public void increment()
         {
-            if (Level == CurrentLevel)
+            CurrentLevel += 1;
+            if (Level <= CurrentLevel)
             {
-                CurrentLevel += 1;
+                Level = CurrentLevel+0;
             }
-            Level += 1;
             // TotalXP += levelCost;
             // Log.Info("Total XP is now " + TotalXP.ToString());
             return;
@@ -192,10 +192,8 @@ namespace CouncilorLevels
         private void ResetXP()
         {
             int total_xp = this.TotalXP;
-            Log.Info("1 TotalXP is " + this.TotalXP.ToString() + "TotalXPCopy is " + total_xp);
             this.ref_councilor.ChangeXP(this.TotalXP);
             this.TotalXP = total_xp;
-            Log.Info("2 TotalXP is " + this.TotalXP.ToString() + "TotalXPCopy is " + total_xp);
             this.CurrentLevel = 1;
         }
 
@@ -204,7 +202,6 @@ namespace CouncilorLevels
         /// </summary>
         private void SetTraits()
         {
-            // Log.Info("Add traits here");
             foreach (string traitName in this.traitTemplateNames)
             {
                 // Log.Info("Adding trait " + traitName);

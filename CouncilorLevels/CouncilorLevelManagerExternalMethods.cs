@@ -17,7 +17,7 @@ namespace CouncilorLevels
         /// <returns></returns>
         public static int? GetCouncilorLevel(TICouncilorState councilor)
         {
-            return Manager[councilor].Level;
+            return Manager[councilor].CurrentLevel;
         }
 
         public static int? GetCouncilorTotalXP(TICouncilorState councilor)

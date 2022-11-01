@@ -50,10 +50,10 @@ namespace CouncilorLevels
         [Draw("Org Capacity from Councilor Level", Collapsible = true)] public static bool orgCapacityEnabled = true;
         [Draw("Councilor Respecs", Collapsible = true)] public static bool councilorRespecs = true;
 
-        public Dictionary<string, bool> ModsEnabled = new Dictionary<string, bool>()
+        public List<string> ModsEnabled = new List<string>()
         {
-            {"OrgCapacityFromLevel", orgCapacityEnabled },
-            {"CouncilorRespecs", councilorRespecs },
+            "OrgCapacityFromLevel",
+            "CouncilorRespecs"
         };
 
         public override void Save(UnityModManager.ModEntry modEntry)
@@ -61,17 +61,45 @@ namespace CouncilorLevels
             base.Save(modEntry);
         }
 
+        private bool ManageRegister(string modName, bool modEnabled)
+        {
+            if (this.ModsEnabled.Contains(modName))
+            {
+                if (modEnabled)
+                {
+                    return true;
+                }
+                else
+                {
+                    this.ModsEnabled.Remove(modName);
+                    return false;
+                }
+            }
+            else
+            {
+                if (modEnabled)
+                {
+                    this.ModsEnabled.Add(modName);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         public void OnChange()
         {
-            ModsEnabled["OrgCapacityFromLevel"] = orgCapacityEnabled;
-            ModsEnabled["CouncilorRespecs"] = councilorRespecs;
+            this.ManageRegister("OrgCapacityFromLevel", orgCapacityEnabled);
+            this.ManageRegister("CouncilorRespecs", councilorRespecs);
         }
 
         public bool IsEnabled(string ModName)
         {
-            if (ModsEnabled.TryGetValue(ModName, out bool value))
+            if (this.ModsEnabled.Contains(ModName))
             {
-                return value;
+                return true;
             }
             return false;
         }
@@ -97,7 +125,7 @@ namespace CouncilorLevels
 
         static void Postfix(TICouncilorState __instance, CouncilorAugmentationOption augmentation)
         {
-            Log.Info("Apply augmentation with cost " + augmentation.XPCost.ToString());
+            // Log.Info("Apply augmentation with cost " + augmentation.XPCost.ToString());
             CouncilorLevelManagerExternalMethods.IncrementCouncilorLevel(__instance);
         }
     }
